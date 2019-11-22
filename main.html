@@ -5,15 +5,26 @@
         <link rel="stylesheet" type="text/css" href="main.css">
     </head>
     <body>
-        <p id = "number">0</p>
-        <button onclick="buttonClick()">Clicky</button>
-        <div id = "dripUpgrades">
-            <button id = "dripUpgrade0" onclick="dripClick(0)">Buy drip lvl 1<br>10
-            <!--button id = "dripUpgrade1" onclick="dripClick(1)">Buy drip lvl 2<br>10-->
-        </div>
-        <div id = "clickUpgrades">
-            <button id = "clickUpgrade0" onclick="clickClick(0)">Buy click lvl 1<br>10
-        </div>
+        <p id = "number">90</p>
+        <button onclick="buttonClick()" id="click">Clicky</button>
+
+        <table>
+            <tr id = "upgradeHeaders">
+                <th>Level 1</th>
+            </tr>
+            <tr id = "dripUpgrades">
+                <td>
+                    <button id = "dripUpgrade0" onclick="dripClick(0)">Buy drip lvl 1<hr>10<hr>0</button>
+                </td>
+            </tr>
+
+            <tr id = "clickUpgrades">
+                <td>
+                    <button id = "clickUpgrade0" onclick="clickClick(0)">Buy click lvl 1<hr>10<hr>0</button>
+                </td>
+            </tr>
+        </table>
+        
         <script src="main.js"></script>
     </body>
 </html>

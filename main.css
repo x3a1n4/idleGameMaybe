@@ -5,4 +5,16 @@ button{
     padding: 20px;
     border: 2px solid black;
     text-align: center;
+    width: 100%;
+}
+
+table, th, td{
+    border: 1px solid black;
+    font-family: sans-serif;
+}
+
+#click{
+    margin-block-end: 10px;
+    background-color: chartreuse;
+    width: fit-content;
 }

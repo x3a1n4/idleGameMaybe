@@ -62,12 +62,15 @@ class UpgradeButton{
     //this returns the full button element of this class
     getButton(){
         var button = document.createElement("BUTTON");
-        var id = this.level - 1;
+        
 
         button.innerHTML = this.getInnerHTML();
 
         button.setAttribute("id", this.id);
-        button.setAttribute("onClick", this.type + "Click(" + id + ")");
+
+        button.addEventListener("click", this.performUpgrade);
+
+        console.log(this);
 
         return(button);
     }
@@ -84,6 +87,20 @@ class UpgradeButton{
     updateButton(){
         document.getElementById(this.id).innerHTML = this.getInnerHTML();
     }
+
+    performUpgrade(){
+        var id = this.level - 1;
+
+        console.log(this);
+
+        if(number > values[this.type]["costs"][id]){
+            number -= values[this.type]["costs"][id];
+            values[this.type]["amounts"][id];
+            values[this.type]["costs"][id] *= values[this.type]["increases"][id];
+    
+            this.updateButton();
+        }
+    }
 }
 
 var buttons = [
@@ -95,9 +112,8 @@ buttons.forEach(function (item, index) {
     item.makeButton();
 });
 
-function buttonClick(){
+function mainButtonClick(){
     number += clickPowers[0];
-    console.log(number);
 }
 
 function dripClick(id){

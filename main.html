@@ -6,7 +6,7 @@
     </head>
     <body>
         <p id = "number">90</p>
-        <button onclick="buttonClick()" id="click">Clicky</button>
+        <button onclick="mainButtonClick()" id="click">Clicky</button>
 
         <table>
             <tr id = "upgradeHeaders">
@@ -14,13 +14,13 @@
             </tr>
             <tr id = "dripUpgrades">
                 <td>
-                    <button id = "dripUpgrade0" onclick="dripClick(0)">Buy drip lvl 1<hr>10<hr>0</button>
+                    <button id = "dripUpgrade0" onclick="upgradeButtonClick('drip', 0)">Buy drip lvl 1<hr>10<hr>0</button>
                 </td>
             </tr>
 
             <tr id = "clickUpgrades">
                 <td>
-                    <button id = "clickUpgrade0" onclick="clickClick(0)">Buy click lvl 1<hr>10<hr>0</button>
+                    <button id = "clickUpgrade0" onclick="upgradeButtonClick('click', 0)">Buy click lvl 1<hr>10<hr>0</button>
                 </td>
             </tr>
         </table>

@@ -68,7 +68,10 @@ class UpgradeButton{
 
         button.setAttribute("id", this.id);
 
-        button.addEventListener("click", this.performUpgrade);
+        //https://metafizzy.co/blog/this-in-event-listeners/
+        this.clickHandler = this.onclick.bind(this);
+
+        button.addEventListener("click", this.clickHandler);
 
         console.log(this);
 
@@ -87,9 +90,10 @@ class UpgradeButton{
     updateButton(){
         document.getElementById(this.id).innerHTML = this.getInnerHTML();
     }
+}
 
-    performUpgrade(){
-        var id = this.level - 1;
+UpgradeButton.prototype.performUpgrade = function(){
+    var id = this.level - 1;
 
         console.log(this);
 
@@ -100,7 +104,6 @@ class UpgradeButton{
     
             this.updateButton();
         }
-    }
 }
 
 var buttons = [

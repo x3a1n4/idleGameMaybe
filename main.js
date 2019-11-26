@@ -17,8 +17,14 @@ Array.prototype.sum = function(){
     return(runningTotal);
 }
 
-function expo(x, f) {
-    return Number.parseFloat(x).toExponential(f);
+var digits = 2;
+function expo(x) {
+    if(x > 100000){
+        return(Number.parseFloat(x).toExponential(digits));
+    }else{
+        return(Math.ceil(x));
+    }
+    
 }
 
 //list of all buttons
@@ -41,14 +47,15 @@ class UpgradeButton{
 
     getInnerHTML(){
         var id = this.level - 1;
+        var thisValues = values[this.type];
         return(
                 this.type.title() + " lvl " + this.level + 
                 "<hr>" + 
-                Math.ceil(values[this.type]["costs"][id]) + 
+                expo(thisValues["costs"][id]) + 
                 "<hr>" + 
-                values[this.type]["amounts"][id] + 
+                expo(thisValues["amounts"][id]) + 
                 "<hr>" + 
-                values[this.type]["values"][id]
+                expo(thisValues["values"][id])
             );
     }
 
@@ -108,36 +115,73 @@ class UpgradeButton{
             return(false);
         }
     }
+
+    grayOut(){
+        this.button().innerHTML = "";
+    }
+}
+function findButton(type, level){
+    var button = false;
+    buttons.forEach(function(b){
+        if(b.type == type && b.level == level){
+            console.log(b);
+            button = b;
+        }else{
+            return(false);
+        }
+    });
+    return(button);
 }
 
 //starting buttons - should move to a new file or something
-new UpgradeButton("click", 1).makeButton();
-new UpgradeButton("drip", 1).makeButton();
+//also make all the buttons
+for (var key in values) {
+    values[key]["values"].forEach(function(x, item){
+        var upgradeButton = new UpgradeButton(key, item + 1);
+        upgradeButton.makeButton();
+        upgradeButton.grayOut();
+    });
+}
+
+console.log(findButton("click", 1));
+findButton("click", 1).updateButton();
+findButton("drip", 1).updateButton();
 
 //if the "click" button is clicked
 function mainButtonClick(){
     number += values["click"]["amounts"].sum();
 }
 
+//zoom in and out
+//find place for this
+//also from https://stackoverflow.com/questions/14926366/mousewheel-event-in-modern-browsers
+var tableZoom = 1;
+window.addEventListener("wheel", event => {
+    const delta = Math.sign(event.deltaY);
+    tableZoom += -delta / 20;
+    if(tableZoom > 1){
+        tableZoom = 1;
+    }
+    if(tableZoom < 0.1){
+        tableZoom = 0.1;
+    }
+    document.getElementById("upgradeTable").style.transform = "scale(" + tableZoom + ")";
+    console.info(delta);
+});
+
 //game loop
 function play(){
     document.getElementById("number").innerHTML = Math.floor(number);
     number += values["drip"]["amounts"].sum() / 20;
 
-    //unlock next row?
+    //unlock next buttons
+    //needs change
     if(number > unlockNextThing){
         unlockNextThing *= 10;
         thingsUnlocked++;
 
-        //add header
-        var node = document.createElement("TH");
-        var textnode = document.createTextNode("Level " + thingsUnlocked);
-        node.appendChild(textnode);
-        document.getElementById("upgradeHeaders").appendChild(node);
-
-        //add buttons
-        new UpgradeButton("click", thingsUnlocked).makeButton();
-        new UpgradeButton("drip", thingsUnlocked).makeButton();
+        UpgradeButton.findButton("click", thingsUnlocked).updateButton();
+        UpgradeButton.findButton("drip", thingsUnlocked).updateButton();
 
     }
 

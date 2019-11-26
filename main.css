@@ -5,12 +5,18 @@ button{
     padding: 20px;
     border: 2px solid black;
     text-align: center;
-    width: 100%;
+    width: 100px;
 }
 
 table, th, td{
     /*border: 1px solid black;*/
     font-family: sans-serif;
+    
+}
+
+table{
+    transform-origin: top left;
+    transform: scale(1);
 }
 
 hr{
@@ -21,8 +27,14 @@ hr{
     margin-block-end: 10px;
     background-color: chartreuse;
     width: fit-content;
+    height: fit-content;
 }
 
 .sum{
     margin: 10px;
+}
+
+body{
+    overflow: hidden;
+    background-image: url()
 }

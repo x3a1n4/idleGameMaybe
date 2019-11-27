@@ -1,1 +1,5 @@
-This is a description
+Rows of buttons:
+Drip
+Drip upgrades, improves the value of the one above it
+Drip autobuy thingies
+

@@ -1,3 +1,5 @@
+//make the values 
+
 var number = parseFloat(document.getElementById("number").innerHTML);
 
 var unlockNextThing = 100;
@@ -143,14 +145,7 @@ for (var key in values) {
     });
 }
 
-console.log(findButton("click", 1));
-findButton("click", 1).updateButton();
 findButton("drip", 1).updateButton();
-
-//if the "click" button is clicked
-function mainButtonClick(){
-    number += values["click"]["amounts"].sum();
-}
 
 //zoom in and out
 //find place for this
@@ -180,8 +175,13 @@ function play(){
         unlockNextThing *= 10;
         thingsUnlocked++;
 
-        UpgradeButton.findButton("click", thingsUnlocked).updateButton();
-        UpgradeButton.findButton("drip", thingsUnlocked).updateButton();
+        //change to everything that can be unlocked now
+        findButton("drip", thingsUnlocked).updateButton();
+
+        //add title
+        var node = document.createElement("TH");
+        node.innerHTML = "Level " + thingsUnlocked;
+        document.getElementById("upgradeHeaders").appendChild(node);
 
     }
 

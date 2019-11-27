@@ -5,13 +5,14 @@ button{
     padding: 20px;
     border: 2px solid black;
     text-align: center;
-    width: 100px;
+    width: 150px;
+    height: 100%;
 }
 
 table, th, td{
     /*border: 1px solid black;*/
     font-family: sans-serif;
-    
+    height: 100%;
 }
 
 table{
@@ -23,12 +24,6 @@ hr{
     border: 1px solid black;
 }
 
-#click{
-    margin-block-end: 10px;
-    background-color: chartreuse;
-    width: fit-content;
-    height: fit-content;
-}
 
 .sum{
     margin: 10px;
@@ -37,4 +32,9 @@ hr{
 body{
     overflow: hidden;
     background-image: url()
+}
+
+#number{
+    margin: auto;
+    font-size: 30px;
 }

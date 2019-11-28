@@ -30,7 +30,8 @@ class UpgradeButton{
         this.level = level;
 
         //does it update the array if I do this?
-        //this.values = values[this.type + this.level]
+        //it does!
+        this.values = values[this.type + this.level]
 
         this.id = this.type + "Upgrade" + (this.level - 1);
 
@@ -44,15 +45,15 @@ class UpgradeButton{
     }
 
     getInnerHTML(){
-        var thisValues = values[this.type + this.level];
+        //var thisValues = values[this.type + this.level];
         return(
                 this.type.title() + " lvl " + this.level + 
                 "<hr>" + 
-                expo(thisValues.cost) + 
+                expo(this.values.cost) + 
                 "<hr>" + 
-                expo(thisValues.amount) + 
+                expo(this.values.amount) + 
                 "<hr>" + 
-                expo(thisValues.power)
+                expo(this.values.power)
             );
     }
 
@@ -88,17 +89,16 @@ class UpgradeButton{
 
     //if the button was clicked, then perform the upgrade
     performUpgrade(){
-        var thisValues = values[this.type + this.level];
+        //var thisValues = values[this.type + this.level];
 
         //if I can afford it
         if(this.isAffordable()){
             //subtract the cost
-            number -= thisValues.cost;
-            //add to amounts this times how good it is
-            thisValues.amount += thisValues.power;
+            number -= this.values.cost;
+            //add to amount
+            this.values.amount += 1;
             //increase cost
-            //this might not update the actual array
-            thisValues.cost *= thisValues.increase;
+            this.values.cost *= this.values.increase;
 
             this.updateButton();
         }
@@ -106,9 +106,7 @@ class UpgradeButton{
 
     //find out if you can afford this upgrade
     isAffordable(){
-        var id = this.level - 1;
-        var thisValues = values[this.type + this.level];
-        if(number > thisValues.cost){
+        if(number > this.values.cost){
             return(true);
         }else{
             return(false);
@@ -134,11 +132,11 @@ function findButton(type, level){
 }
 
 //get sum of values of buttons
-function sumButtons(type, key){
+function sumButtons(type){
     var runningSum = 0;
     buttons.forEach(function(b){
         if(b.type == type){
-            runningSum += values[type + b.level][key];
+            runningSum += values[type + b.level].amount * values[type + b.level].power;
         }
     });
     return(runningSum);
@@ -174,7 +172,7 @@ window.addEventListener("wheel", event => {
 //game loop
 function play(){
     document.getElementById("number").innerHTML = expo(number);
-    number += sumButtons("drip", "amount") / 10;
+    number += sumButtons("drip") / 10;
 
     //unlock next buttons
     //needs change
@@ -204,7 +202,7 @@ function play(){
     //update values of sums
     Array.from(document.getElementsByClassName("sum")).forEach(function(e){
         var type = e.id.substring(0, e.id.length - 3);
-        e.innerHTML = sumButtons(type, "amount");
+        e.innerHTML = sumButtons(type);
     });
 }
 

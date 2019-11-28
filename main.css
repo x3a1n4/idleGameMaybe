@@ -37,4 +37,5 @@ body{
 #number{
     margin: auto;
     font-size: 30px;
+    text-align: center;
 }

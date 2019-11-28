@@ -11,14 +11,6 @@ String.prototype.title = function(){
       
 }
 
-Array.prototype.sum = function(){
-    runningTotal = 0;
-    this.forEach(function(e){
-        runningTotal += e;
-    });
-    return(runningTotal);
-}
-
 var digits = 2;
 function expo(x) {
     if(x > 100000){
@@ -37,27 +29,30 @@ class UpgradeButton{
         this.type = type;
         this.level = level;
 
+        //does it update the array if I do this?
+        //this.values = values[this.type + this.level]
+
         this.id = this.type + "Upgrade" + (this.level - 1);
 
         buttons.push(this);
     }
 
     //this gets the button element
+    //should add it as variable in the class, instead of like this, so the buttons don't need id's
     button(){
         return(document.getElementById(this.id));
     }
 
     getInnerHTML(){
-        var id = this.level - 1;
-        var thisValues = values[this.type];
+        var thisValues = values[this.type + this.level];
         return(
                 this.type.title() + " lvl " + this.level + 
                 "<hr>" + 
-                expo(thisValues["costs"][id]) + 
+                expo(thisValues.cost) + 
                 "<hr>" + 
-                expo(thisValues["amounts"][id]) + 
+                expo(thisValues.amount) + 
                 "<hr>" + 
-                expo(thisValues["values"][id])
+                expo(thisValues.power)
             );
     }
 
@@ -93,16 +88,17 @@ class UpgradeButton{
 
     //if the button was clicked, then perform the upgrade
     performUpgrade(){
-        var id = this.level - 1;
+        var thisValues = values[this.type + this.level];
 
         //if I can afford it
         if(this.isAffordable()){
             //subtract the cost
-            number -= values[this.type]["costs"][id];
+            number -= thisValues.cost;
             //add to amounts this times how good it is
-            values[this.type]["amounts"][id] += values[this.type]["values"][id];
-            //increase costs
-            values[this.type]["costs"][id] *= values[this.type]["increases"][id];
+            thisValues.amount += thisValues.power;
+            //increase cost
+            //this might not update the actual array
+            thisValues.cost *= thisValues.increase;
 
             this.updateButton();
         }
@@ -111,7 +107,8 @@ class UpgradeButton{
     //find out if you can afford this upgrade
     isAffordable(){
         var id = this.level - 1;
-        if(number > values[this.type]["costs"][id]){
+        var thisValues = values[this.type + this.level];
+        if(number > thisValues.cost){
             return(true);
         }else{
             return(false);
@@ -122,6 +119,7 @@ class UpgradeButton{
         this.button().innerHTML = "";
     }
 }
+
 function findButton(type, level){
     var button = false;
     buttons.forEach(function(b){
@@ -135,14 +133,23 @@ function findButton(type, level){
     return(button);
 }
 
+//get sum of values of buttons
+function sumButtons(type, key){
+    var runningSum = 0;
+    buttons.forEach(function(b){
+        if(b.type == type){
+            runningSum += values[type + b.level][key];
+        }
+    });
+    return(runningSum);
+}
+
 //starting buttons - should move to a new file or something
 //also make all the buttons
-for (var key in values) {
-    values[key]["values"].forEach(function(x, item){
-        var upgradeButton = new UpgradeButton(key, item + 1);
-        upgradeButton.makeButton();
-        upgradeButton.grayOut();
-    });
+for (var button in values) {
+    var upgradeButton = new UpgradeButton(values[button].type, values[button].level);
+    upgradeButton.makeButton();
+    upgradeButton.grayOut();
 }
 
 findButton("drip", 1).updateButton();
@@ -153,7 +160,7 @@ findButton("drip", 1).updateButton();
 var tableZoom = 1;
 window.addEventListener("wheel", event => {
     const delta = Math.sign(event.deltaY);
-    tableZoom += -delta / 20;
+    tableZoom += -delta / 10;
     if(tableZoom > 1){
         tableZoom = 1;
     }
@@ -166,8 +173,8 @@ window.addEventListener("wheel", event => {
 
 //game loop
 function play(){
-    document.getElementById("number").innerHTML = Math.floor(number);
-    number += values["drip"]["amounts"].sum() / 20;
+    document.getElementById("number").innerHTML = expo(number);
+    number += sumButtons("drip", "amount") / 10;
 
     //unlock next buttons
     //needs change
@@ -197,7 +204,7 @@ function play(){
     //update values of sums
     Array.from(document.getElementsByClassName("sum")).forEach(function(e){
         var type = e.id.substring(0, e.id.length - 3);
-        e.innerHTML = values[type]["amounts"].sum();
+        e.innerHTML = sumButtons(type, "amount");
     });
 }
 

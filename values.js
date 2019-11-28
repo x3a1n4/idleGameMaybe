@@ -1,16 +1,40 @@
 //ok, I should figure out what I want this to look like
-var values = {
-    drip: {
-        amounts: [0, 0, 0, 0, 0],
-        costs: [10, 100, 1000, 10000, 100000],
-        increases: [1.5, 2, 3, 5, 7],
-        values: [1, 2, 5, 10, 25]
-    },
-
-    upgrade: {
-        amounts: [0, 0, 0, 0, 0],
-        costs: [1000, 10000, 100000, 1000000, 10000000],
-        increases: [1.5, 2, 3, 5, 7],
-        values: [1, 2, 5, 10, 25]
+//I think I need to do it by button
+//so it'll be button = type, amount, cost, increase, value
+/*
+values = {
+    drip1:{
+        amount:0,
+        cost:100,
+        increase:1.2,
+        power:1
     }
+}
+*/
+//figure out how to make
+var increases = [1.2, 2, 3, 5, 7, 10, 15, 20, 30, 50, 100]
+var power = [1, 2, 5, 10, 25, 100, 300, 1000]
+var values = {
+
 };
+
+//maybe make buttons here?
+for(var i = 0; i < 8; i++){
+    values["drip" + (i+1)] = {
+        amount: 0,
+        cost: Math.pow(10, i + 1),
+        increase: increases[i],
+        power: power[i],
+        type: "drip",
+        level: i+1
+    };
+
+    values["upgrade" + (i+1)] = {
+        amount: 0,
+        cost: Math.pow(100, i + 1),
+        increase: increases[i],
+        power: power[i],
+        type: "upgrade",
+        level: i+1
+    };
+}

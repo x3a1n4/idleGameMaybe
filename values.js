@@ -30,7 +30,7 @@ for(var i = 0; i < buttonTableWidth; i++){
         level: i+1
     };
 
-    for(var j = 0; j < 8; i++){
+    for(var j = 0; j < 8; j++){
         values["upgrade" + j + (i+1)] = {
             amount: 0,
             cost: Math.pow(Math.pow(10, j + 2), i + 1),

@@ -11,6 +11,7 @@ values = {
     }
 }
 */
+const buttonTableWidth = 8;
 //figure out how to make
 var increases = [1.2, 2, 3, 5, 7, 10, 15, 20, 30, 50, 100]
 var power = [1, 2, 5, 10, 25, 100, 300, 1000]
@@ -19,7 +20,7 @@ var values = {
 };
 
 //maybe make buttons here?
-for(var i = 0; i < 8; i++){
+for(var i = 0; i < buttonTableWidth; i++){
     values["drip" + (i+1)] = {
         amount: 0,
         cost: Math.pow(10, i + 1),
@@ -29,12 +30,16 @@ for(var i = 0; i < 8; i++){
         level: i+1
     };
 
-    values["upgrade" + (i+1)] = {
-        amount: 0,
-        cost: Math.pow(100, i + 1),
-        increase: increases[i],
-        power: power[i],
-        type: "upgrade",
-        level: i+1
-    };
+    for(var j = 0; j < 8; i++){
+        values["upgrade" + j + (i+1)] = {
+            amount: 0,
+            cost: Math.pow(Math.pow(10, j + 2), i + 1),
+            increase: increases[i],
+            power: power[i],
+            type: "upgrade" + j,
+            level: i+1
+        };
+    }
+
+    
 }

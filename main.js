@@ -1,4 +1,6 @@
 //make the values 
+//this is all very messy :(
+//I really should just restart the whole thing
 
 var number = parseFloat(document.getElementById("number").innerHTML);
 
@@ -28,6 +30,8 @@ class UpgradeButton{
     constructor(type, level){
         this.type = type;
         this.level = level;
+
+        this.unlocked = true;
 
         //does it update the array if I do this?
         //it does!
@@ -114,7 +118,8 @@ class UpgradeButton{
     }
 
     grayOut(){
-        this.button().innerHTML = "";
+        this.button().innerHTML = "a<hr>a<hr>a<hr>a";
+        this.unlocked = false;
     }
 }
 
@@ -122,7 +127,6 @@ function findButton(type, level){
     var button = false;
     buttons.forEach(function(b){
         if(b.type == type && b.level == level){
-            console.log(b);
             button = b;
         }else{
             return(false);
@@ -147,7 +151,9 @@ function sumButtons(type){
 for (var button in values) {
     var upgradeButton = new UpgradeButton(values[button].type, values[button].level);
     upgradeButton.makeButton();
-    upgradeButton.grayOut();
+
+    //I'm not sure if this bit actually helps the game be fun, so I won't leave it in
+    //upgradeButton.grayOut();
 }
 
 findButton("drip", 1).updateButton();
@@ -176,12 +182,10 @@ function play(){
 
     //unlock next buttons
     //needs change
+    //honestly this part should be removed
     if(number > unlockNextThing){
         unlockNextThing *= 10;
         thingsUnlocked++;
-
-        //change to everything that can be unlocked now
-        findButton("drip", thingsUnlocked).updateButton();
 
         //add title
         var node = document.createElement("TH");
@@ -190,14 +194,26 @@ function play(){
 
     }
 
-    //change colors of buttons
+    //combine all of these loops
+    //update all previously unlocked buttons
     buttons.forEach(function(b){
+        if(b.unlocked){
+            b.button().innerHTML = b.getInnerHTML();
+        }
+
+        //change colours of buttons
         if(b.isAffordable()){
             b.button().style.backgroundColor = "aquamarine";
+            b.unlocked = true;
         }else{
             b.button().style.backgroundColor = "grey";
         }
     });
+    
+    //update how good the buttons are
+    for(var i = 1; i <= buttonTableWidth; i++){
+        findButton("drip", i).values.power = (findButton("upgrade", i).values.amount * findButton("upgrade", i).values.power) + 1;
+    }
 
     //update values of sums
     Array.from(document.getElementsByClassName("sum")).forEach(function(e){

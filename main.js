@@ -80,10 +80,51 @@ class UpgradeButton{
 
     //this actually adds the button to the end of the page
     makeButton(){
-        var node = document.createElement("TD");
+        //if the row it should be in exists, find it
+        var rowId = this.type + "Upgrades";
+        if(document.getElementById(rowId) == null){
+            var newRow = document.createElement("TR");
+            newRow.setAttribute("id", rowId);
+            document.getElementById("upgradeTable").appendChild(newRow);
+
+            //also add a sum for it
+            var newSum = document.createElement("TD");
+            var newSumData = document.createElement("P");
+            newSumData.setAttribute("id", rowId + "sum");
+            newSumData.setAttribute("class", "sum");
+            newSumData.innerHTML = "0";
+
+            //add it to page
+            newSum.appendChild(newSumData);
+            newRow.appendChild(newSum);
+        }
+
+        //also check if title exists
+        var titleExists = false;
+
+        var titleName = this.level
+        //for(var title in document.getElementById("upgradeHeaders").children){
+        var children = document.getElementById("upgradeHeaders").children;
+
+        //loop through headers
+        for (var i = 0; i < children.length; i++) {
+            var title = children[i];
+            //console.log(title);
+            if(title.innerHTML == titleName){
+                titleExists = true;
+                break;
+            }
+        }
+        //if the title doesn't exist, add it
+        if(!titleExists){
+            var newTitle = document.createElement("TH");
+            newTitle.innerHTML = titleName;
+            document.getElementById("upgradeHeaders").appendChild(newTitle);
+        }
+        var newData = document.createElement("TD");
         
-        node.appendChild(this.getButton());
-        document.getElementById(this.type + "Upgrades").appendChild(node);
+        newData.appendChild(this.getButton());
+        document.getElementById(rowId).appendChild(newData);
     }
 
     //this updates the button if values in values are changed
@@ -188,9 +229,11 @@ function play(){
         thingsUnlocked++;
 
         //add title
+        /*
         var node = document.createElement("TH");
         node.innerHTML = "Level " + thingsUnlocked;
         document.getElementById("upgradeHeaders").appendChild(node);
+        */
 
     }
 
